@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 import sys
@@ -15,9 +14,33 @@ def detectCircles(frame):
     rows = gray.shape[0]
     circles = cv2.HoughCircles(gray, cv2.HOUGH_GRADIENT, 1, rows / 8,
                                param1=100, param2=30,
-                               minRadius=1, maxRadius=30)   
+                               minRadius=1, maxRadius=30)
+    
+    if circles is not None:
+        circles = np.uint16(np.around(circles)) 
     
     return circles
+
+# Print circles
+def printCircles(frame, circles):
+    if circles is not None:
+        for i in circles[0, :]:
+            center = (i[0], i[1])
+            radius = i[2]
+
+            if i[0] > 200 and i[0] < 400:
+                cv2.putText(frame, str(center), (i[0] + radius, i[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2, 10)
+
+                # circle center
+                cv2.circle(frame, center, 1, (0, 100, 100), 3)
+                # circle outline
+                cv2.circle(frame, center, radius, (0, 255, 255), 3)
+            
+            else:
+                # circle center
+                cv2.circle(frame, center, 1, (0, 100, 100), 2)
+                # circle outline
+                cv2.circle(frame, center, radius, (255, 0, 0), 2)
 
 # Camera
 cam = cv2.VideoCapture(0)
@@ -25,19 +48,11 @@ cam = cv2.VideoCapture(0)
 while True:
     # Capture the next frame
     ret, frame = cam.read()
+    frame = cv2.flip(frame, 1)
 
     # Get the circles and show in frame
     circles = detectCircles(frame)
-    if circles is not None:
-        print(len(circles[0, :]))
-        circles = np.uint16(np.around(circles))
-        for i in circles[0, :]:
-            center = (i[0], i[1])
-            # circle center
-            cv2.circle(frame, center, 1, (0, 100, 100), 3)
-            # circle outline
-            radius = i[2]
-            cv2.circle(frame, center, radius, (255, 0, 0), 3)
+    printCircles(frame, circles)
 
     # Show the frame in window
     cv2.imshow('Circle detection', frame)
