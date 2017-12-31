@@ -42,6 +42,28 @@ def printCircles(frame, circles):
                 # circle outline
                 cv2.circle(frame, center, radius, (255, 0, 0), 2)
 
+def controller(circles):
+    if circles is not None:
+        min = 1000
+        dir = 1
+
+        for i in circles[0, :]:
+            direction = i[0] - 300
+            distance = abs(direction)
+
+            if distance < min:
+                min = distance
+                dir = direction
+        
+        buff = 0
+
+        if dir < -100: buff = -1
+        elif dir > 100:       buff = 1
+
+        return buff
+    else:
+        return -1
+
 # Camera
 cam = cv2.VideoCapture(0)
 
@@ -53,6 +75,9 @@ while True:
     # Get the circles and show in frame
     circles = detectCircles(frame)
     printCircles(frame, circles)
+    
+    # Get next command
+    print(controller(circles))
 
     # Show the frame in window
     cv2.imshow('Circle detection', frame)
