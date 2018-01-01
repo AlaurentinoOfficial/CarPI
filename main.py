@@ -5,7 +5,6 @@ import detection as dt
 
 def updateCamera(cam):
     ret, frame = cam.read()
-    frame = cv2.flip(frame, 1)
 
     return frame
 
@@ -13,7 +12,7 @@ def updateCamera(cam):
 cam = cv2.VideoCapture(0)
 
 while True:
-    time.sleep(0.05)
+    time.sleep(0.1)
 
     # Capture the next frame
     frame = updateCamera(cam)
