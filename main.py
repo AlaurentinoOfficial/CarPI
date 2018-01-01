@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 import time
-from detection import detectCircles, printCircles, controller
+import detection as dt
 
 def updateCamera(cam):
     ret, frame = cam.read()
@@ -19,11 +19,11 @@ while True:
     frame = updateCamera(cam)
 
     # Get the circles and show in frame
-    circles = detectCircles(frame)
-    printCircles(frame, circles)
+    circles = dt.circles(frame)
+    dt.print(frame, circles)
     
     # Get next command
-    ctrl = controller(circles)
+    ctrl = dt.controller(circles)
     font = cv2.FONT_HERSHEY_SIMPLEX
     cv2.putText(frame,'CTRL: ' + str(ctrl),(10,25), font, 0.8,(0,0,0), 1,cv2.LINE_AA)
 

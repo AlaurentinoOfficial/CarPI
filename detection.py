@@ -3,7 +3,7 @@ import numpy as np
 
 # -*- coding: UTF-8 -*-
 
-def detectCircles(frame):
+def circles(frame):
     # Create a gray mask
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Blur
@@ -21,7 +21,7 @@ def detectCircles(frame):
     return circles
 
 # Print circles
-def printCircles(frame, circles):
+def print(frame, circles):
     if circles is not None:
         for i in circles[0, :]:
             center = (i[0], i[1])
