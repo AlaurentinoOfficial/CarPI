@@ -28,7 +28,7 @@ def printCircles(frame, circles):
             radius = i[2]
 
             if i[0] > 200 and i[0] < 400:
-                cv2.putText(frame, str(center), (i[0] + radius, i[1]), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2, 10)
+                cv2.putText(frame, str(center), (i[0] + radius + 5, i[1] + 5), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 0, 255), 2, 10)
 
                 # circle center
                 cv2.circle(frame, center, 1, (0, 100, 100), 3)
@@ -61,4 +61,4 @@ def controller(circles):
 
         return buff
     else:
-        return -1
+        return 1

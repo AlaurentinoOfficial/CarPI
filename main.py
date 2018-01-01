@@ -1,21 +1,31 @@
 import cv2
 import numpy as np
+import time
 from detection import detectCircles, printCircles, controller
+
+def updateCamera(cam):
+    ret, frame = cam.read()
+    frame = cv2.flip(frame, 1)
+
+    return frame
 
 # Camera
 cam = cv2.VideoCapture(0)
 
 while True:
+    time.sleep(0.05)
+
     # Capture the next frame
-    ret, frame = cam.read()
-    frame = cv2.flip(frame, 1)
+    frame = updateCamera(cam)
 
     # Get the circles and show in frame
     circles = detectCircles(frame)
     printCircles(frame, circles)
     
     # Get next command
-    print(controller(circles))
+    ctrl = controller(circles)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    cv2.putText(frame,'CTRL: ' + str(ctrl),(10,25), font, 0.8,(0,0,0), 1,cv2.LINE_AA)
 
     # Show the frame in window
     cv2.imshow('Circle detection', frame)
